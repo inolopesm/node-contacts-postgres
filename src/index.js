@@ -78,6 +78,19 @@ const main = async () => {
       await client.end();
     }
   }
+
+  if (command === "delete") {
+    const id = +process.argv[3];
+
+    const client = new Client(config);
+    await client.connect();
+
+    try {
+      await client.query('DELETE FROM "Contact" WHERE id = $1', [id]);
+    } finally {
+      await client.end();
+    }
+  }
 };
 
 main();
