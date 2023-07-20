@@ -53,6 +53,31 @@ const main = async () => {
       await client.end();
     }
   }
+
+  if (command === "update") {
+    const id = +process.argv[3];
+    const name = process.argv[4];
+    const phoneNumber = process.argv[5];
+
+    const client = new Client(config);
+    await client.connect();
+
+    try {
+      await client.query("BEGIN");
+
+      await client.query(
+        'UPDATE "Contact" SET "name" = $1, "phoneNumber" = $2 WHERE id = $3',
+        [name, phoneNumber, id]
+      );
+
+      await client.query("COMMIT");
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      await client.end();
+    }
+  }
 };
 
 main();
