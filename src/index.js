@@ -22,6 +22,24 @@ const main = async () => {
     console.log("");
     console.log("Examples:");
     console.log("- node src create matheus 550012341234");
+    console.log("- node src read");
+  }
+
+  if (command === "create") {
+    const name = process.argv[3];
+    const phoneNumber = process.argv[4];
+
+    const client = new Client(config);
+    await client.connect();
+
+    try {
+      await client.query(
+        'INSERT INTO "Contact" ("name", "phoneNumber") VALUES ($1, $2)',
+        [name, phoneNumber]
+      );
+    } finally {
+      await client.end();
+    }
   }
 
   if (command === "read") {
